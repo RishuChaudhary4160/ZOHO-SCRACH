@@ -97,7 +97,7 @@ function AppNavBar() {
             <ListItemIcon sx={{ color: "#ffffff" }}>
               <HomeIcon />
             </ListItemIcon>
-            <Typography>Home</Typography>
+            <Typography>Home Page</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ padding: "0px 0px 10px" }}>
             <List sx={{ backgroundColor: "#2f3b5c", padding: "0px" }}>
