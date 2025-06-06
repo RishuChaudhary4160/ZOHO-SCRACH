@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.14.0",
     "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^6.4.5",
-    "@mui/lab": "^7.0.0-beta.13",
     "@mui/material": "^6.4.5",
     "@reduxjs/toolkit": "^2.6.1",
     "@toolpad/core": "^0.12.1",
