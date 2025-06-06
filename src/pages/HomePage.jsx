@@ -15,7 +15,12 @@ import CalendarTab from "./Calender";
 import LeaveTabSummary from "./LeaveTabSummery";
 import AttendanceTabLog from "./AttendanceLogTab";
 import WorkSchedule from "./WorkSchedule";
-
+import RelatedDataTab, {
+  AccordionSection,
+  TableHeader,
+  TableRows,
+  NoRecords,
+} from "./RelatedData";
 export default function HomePage() {
   const [tabValue, setTabValue] = useState(1); // Default to "Profile" tab
   const [isCheckedIn, setIsCheckedIn] = useState(false);
@@ -347,7 +352,12 @@ export default function HomePage() {
             <Tab label="Timesheets" />
             <Tab label="Jobs" />
             <Tab label="Files" />
-            <Tab label="Related Data" />
+            <Tab
+              label="Related Data"
+              sx={
+                tabValue === 13 ? { color: "#1976d2", fontWeight: "bold" } : {}
+              }
+            />
           </Tabs>
         </Box>
 
@@ -422,6 +432,7 @@ export default function HomePage() {
             {tabValue === 3 && <CalendarTab />}
             {tabValue === 7 && <LeaveTabSummary />}
             {tabValue === 8 && <AttendanceTabLog />}
+            {tabValue === 13 && <RelatedDataTab />}
           </Box>
         </Box>
       </Box>
