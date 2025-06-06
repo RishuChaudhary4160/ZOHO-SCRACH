@@ -117,7 +117,25 @@ function AppNavBar() {
                 {/* <ListItemIcon sx={{ color: "#ffffff" }}>
                   <PersonIcon />
                 </ListItemIcon> */}
-                <ListItemText primary="My Hone" />
+                <ListItemText primary="My Home" />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => navigate("/attendances/my")}
+                sx={{
+                  backgroundColor: isActive("/attendances/my")
+                    ? "#556080"
+                    : "transparent",
+                  "&:hover": { backgroundColor: "#4a5a78" },
+                  borderLeft: isActive("/attendances/my")
+                    ? "4px solid #00bcd4"
+                    : "4px solid transparent",
+                  paddingLeft: "16px",
+                }}
+              >
+                {/* <ListItemIcon sx={{ color: "#ffffff" }}>
+                  <PersonIcon />
+                </ListItemIcon> */}
+                <ListItemText primary="My Attendance" />
               </ListItemButton>
             </List>
           </AccordionDetails>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -11,10 +11,13 @@ import {
   Container,
   Grid,
 } from "@mui/material";
-import { TimelineDot } from "@mui/lab";
+import CalendarTab from "./Calender";
+import LeaveTabSummary from "./LeaveTabSummery";
+import AttendanceTabLog from "./AttendanceLogTab";
+import WorkSchedule from "./WorkSchedule";
 
 export default function HomePage() {
-  const [tabValue, setTabValue] = useState(5); // Default to "Profile" tab
+  const [tabValue, setTabValue] = useState(1); // Default to "Profile" tab
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [timer, setTimer] = useState(0);
   const [checkInTime, setCheckInTime] = useState(null);
@@ -26,47 +29,47 @@ export default function HomePage() {
   const dayOfWeek = currentDate.getDay(); // 0 (Sunday) to 6 (Saturday)
   startOfWeek.setDate(currentDate.getDate() - dayOfWeek); // Set to Sunday of the current week
 
-  const scheduleData = Array.from({ length: 7 }, (_, index) => {
-    const date = new Date(startOfWeek);
-    date.setDate(startOfWeek.getDate() + index);
-    const dayStr = date.toLocaleDateString("en-US", {
-      weekday: "short",
-      day: "2-digit",
-    });
-    const isWeekend = index === 0 || index === 6;
-    const isToday = date.toDateString() === currentDate.toDateString();
-    let status = "";
-    let hours = "";
-    let color = "grey";
+  // const scheduleData = Array.from({ length: 7 }, (_, index) => {
+  //   const date = new Date(startOfWeek);
+  //   date.setDate(startOfWeek.getDate() + index);
+  //   const dayStr = date.toLocaleDateString("en-US", {
+  //     weekday: "short",
+  //     day: "2-digit",
+  //   });
+  //   const isWeekend = index === 0 || index === 6;
+  //   const isToday = date.toDateString() === currentDate.toDateString();
+  //   let status = "";
+  //   let hours = "";
+  //   let color = "grey";
 
-    if (isWeekend) {
-      status = "Weekend";
-    } else if (isToday) {
-      if (isCheckedIn && checkInTime) {
-        status = "Present";
-        const elapsed = Math.floor((Date.now() - checkInTime) / 1000);
-        const hoursElapsed = Math.floor(elapsed / 3600);
-        const minutesElapsed = Math.floor((elapsed % 3600) / 60);
-        const secondsElapsed = elapsed % 60;
-        hours = `${hoursElapsed.toString().padStart(2, "0")}:${minutesElapsed.toString().padStart(2, "0")}:${secondsElapsed.toString().padStart(2, "0")} Hrs`;
-        color = "blue";
-      } else if (checkInTime) {
-        status = "Present";
-        const elapsed = Math.floor((timer - checkInTime) / 1000);
-        const hoursElapsed = Math.floor(elapsed / 3600);
-        const minutesElapsed = Math.floor((elapsed % 3600) / 60);
-        const secondsElapsed = elapsed % 60;
-        hours = `${hoursElapsed.toString().padStart(2, "0")}:${minutesElapsed.toString().padStart(2, "0")}:${secondsElapsed.toString().padStart(2, "0")} Hrs`;
-        color = "green";
-      }
-    } else if (date < currentDate && !isWeekend) {
-      status = "Present";
-      hours = "09:00 Hrs"; // Mock data for past days
-      color = "green";
-    }
+  //   if (isWeekend) {
+  //     status = "Weekend";
+  //   } else if (isToday) {
+  //     if (isCheckedIn && checkInTime) {
+  //       status = "Present";
+  //       const elapsed = Math.floor((Date.now() - checkInTime) / 1000);
+  //       const hoursElapsed = Math.floor(elapsed / 3600);
+  //       const minutesElapsed = Math.floor((elapsed % 3600) / 60);
+  //       const secondsElapsed = elapsed % 60;
+  //       hours = `${hoursElapsed.toString().padStart(2, "0")}:${minutesElapsed.toString().padStart(2, "0")}:${secondsElapsed.toString().padStart(2, "0")} Hrs`;
+  //       color = "blue";
+  //     } else if (checkInTime) {
+  //       status = "Present";
+  //       const elapsed = Math.floor((timer - checkInTime) / 1000);
+  //       const hoursElapsed = Math.floor(elapsed / 3600);
+  //       const minutesElapsed = Math.floor((elapsed % 3600) / 60);
+  //       const secondsElapsed = elapsed % 60;
+  //       hours = `${hoursElapsed.toString().padStart(2, "0")}:${minutesElapsed.toString().padStart(2, "0")}:${secondsElapsed.toString().padStart(2, "0")} Hrs`;
+  //       color = "green";
+  //     }
+  //   } else if (date < currentDate && !isWeekend) {
+  //     status = "Present";
+  //     hours = "09:00 Hrs"; // Mock data for past days
+  //     color = "green";
+  //   }
 
-    return { day: dayStr, status, hours, color };
-  });
+  //   return { day: dayStr, status, hours, color };
+  // });
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -145,75 +148,7 @@ export default function HomePage() {
       </Box>
 
       {/* Work Schedule */}
-      <Paper sx={{ p: 2, mb: 2 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-          <Box
-            sx={{
-              width: 24,
-              height: 24,
-              backgroundColor: "#e0e0e0",
-              borderRadius: "50%",
-            }}
-          />
-          <Typography variant="h6" gutterBottom>
-            Work Schedule
-          </Typography>
-        </Box>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          {`${startOfWeek.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })} - ${new Date(startOfWeek).setDate(startOfWeek.getDate() + 6) && new Date(startOfWeek).toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}`}
-        </Typography>
-        <Box sx={{ backgroundColor: "#ffebee", p: 1, borderRadius: 1, mb: 2 }}>
-          <Typography variant="body2" color="error">
-            Day Shift: 2-MH | 9:30 AM - 6:30 PM
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            position: "relative",
-            mb: 2,
-          }}
-        >
-          {scheduleData.map((item, index) => (
-            <Box key={index} sx={{ textAlign: "center", flex: 1 }}>
-              {index > 0 && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: `calc(${index * 14.28}% - 1px)`,
-                    width: "14.28%",
-                    height: 2,
-                    backgroundColor: "#e0e0e0",
-                  }}
-                />
-              )}
-              <TimelineDot
-                sx={{ backgroundColor: item.color, mx: "auto", mb: 1 }}
-              />
-              <Typography variant="body2">{item.day}</Typography>
-              {item.status && (
-                <Typography
-                  variant="body2"
-                  color={
-                    item.color === "green" || item.color === "blue"
-                      ? item.color
-                      : "textSecondary"
-                  }
-                >
-                  {item.status}
-                </Typography>
-              )}
-              {item.hours && (
-                <Typography variant="body2" color="textSecondary">
-                  {item.hours}
-                </Typography>
-              )}
-            </Box>
-          ))}
-        </Box>
-      </Paper>
+      <WorkSchedule />
 
       {/* Dummy Text Section with Name */}
       <Paper sx={{ p: 2, mb: 2 }}>
@@ -381,18 +316,33 @@ export default function HomePage() {
                 tabValue === 1 ? { color: "#1976d2", fontWeight: "bold" } : {}
               }
             />
-            <Tab label="Calendar" />
-            <Tab label="Activities" />
-            <Tab label="Feeds" />
             <Tab
               label="Profile"
               sx={
-                tabValue === 5 ? { color: "#1976d2", fontWeight: "bold" } : {}
+                tabValue === 2 ? { color: "#1976d2", fontWeight: "bold" } : {}
               }
             />
+            <Tab
+              label="Calendar"
+              sx={
+                tabValue === 3 ? { color: "#1976d2", fontWeight: "bold" } : {}
+              }
+            />
+            <Tab label="Activities" />
+            <Tab label="Feeds" />
             <Tab label="Approvals" />
-            <Tab label="Leave" />
-            <Tab label="Attendance" />
+            <Tab
+              label="Leave"
+              sx={
+                tabValue === 7 ? { color: "#1976d2", fontWeight: "bold" } : {}
+              }
+            />
+            <Tab
+              label="Attendance"
+              sx={
+                tabValue === 8 ? { color: "#1976d2", fontWeight: "bold" } : {}
+              }
+            />
             <Tab label="Time Logs" />
             <Tab label="Timesheets" />
             <Tab label="Jobs" />
@@ -468,7 +418,10 @@ export default function HomePage() {
           {/* Main Content Area */}
           <Box sx={{ flexGrow: 1, p: 3 }}>
             {tabValue === 1 && <DashboardContent />}
-            {tabValue === 5 && <ProfileContent />}
+            {tabValue === 2 && <ProfileContent />}
+            {tabValue === 3 && <CalendarTab />}
+            {tabValue === 7 && <LeaveTabSummary />}
+            {tabValue === 8 && <AttendanceTabLog />}
           </Box>
         </Box>
       </Box>

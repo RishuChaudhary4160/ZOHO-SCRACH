@@ -8,6 +8,7 @@ const Permission = localStorage.getItem("permission");
 const LoginCard = React.lazy(() => import("../components/loginCard"));
 import ProtectedRoutes from "../authGuard/protectedRoutes";
 import HomePage from "../pages/HomePage";
+import AttendancesPage from "../pages/AttendancesPage";
 const SuspenseWrapper = ({ children }) => {
   return <Suspense>{children}</Suspense>;
 };
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
         <Layout />
       </ProtectedRoutes>
     ),
-    children: [...(Permission === "superadmin" ? [] : [])],
+    children: [{ index: true, path: "my", element: <AttendancesPage /> }],
   },
   ...adminRoutes,
 ]);
